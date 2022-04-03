@@ -1,0 +1,94 @@
+#!/usr/bin/python
+
+# program will use dbus to get spotify song info
+
+import dbus
+import sys
+
+class color:
+   PURPLE = '\033[95m'
+   CYAN = '\033[96m'
+   DARKCYAN = '\033[36m'
+   BLUE = '\033[94m'
+   GREEN = '\033[92m'
+   YELLOW = '\033[93m'
+   RED = '\033[91m'
+   BOLD = '\033[1m'
+   UNDERLINE = '\033[4m'
+   ITALIC = '\x1B[3m'
+   END = '\033[0m'
+
+arguments = sys.argv
+
+class fetch:
+    def __init__(self) -> None:
+        try:
+            session_bus = dbus.SessionBus()
+            spotify_bus = session_bus.get_object("org.mpris.MediaPlayer2.spotify",
+                                                "/org/mpris/MediaPlayer2")
+            spotify_properties = dbus.Interface(spotify_bus,
+                                                "org.freedesktop.DBus.Properties")
+            self.metadata = spotify_properties.Get("org.mpris.MediaPlayer2.Player", "Metadata")
+        except:
+            print('an error occured, are you sure you are playing a spotify song?')
+        pass
+    
+    def get_song_name(self) -> str:
+        try:
+            return(self.metadata['xesam:title'])
+        except:
+            print('error on song name')
+            quit()
+    
+    def get_artist_name(self) -> str:
+        try:
+            artistdata = self.metadata["xesam:albumArtist"]
+            return(next(iter(artistdata)))
+        except:
+            print('error on artist')
+            quit()
+    
+    def get_album(self) -> str:
+        try:
+            return(self.metadata["xesam:album"])
+        except:
+            print('error on album')
+            quit()
+    
+    def get_url(self) -> str:
+        try:
+            return(self.metadata['xesam:url'])
+        except:
+            print('error on url')
+            quit()
+        
+    def get_length(self) -> int:
+        try:
+            seconds=(self.metadata['mpris:length']/1000000)%60
+            minutes=(self.metadata['mpris:length']/(1000000*60))%60
+            return(str(int(minutes)) + ":" + str(int(seconds)))
+        except:
+            print('error on length')
+            quit()
+
+    def display_info(self) -> None:
+        print(color.BOLD + color.UNDERLINE + color.BLUE + 'spotify song info:\n' + color.END)
+        print(color.ITALIC + color.RED + 'title    ~  ' + self.get_song_name() + color.END)
+        print(color.ITALIC + color.BLUE + 'artist   ~  ' + self.get_artist_name() + color.END)
+        print(color.ITALIC + color.GREEN + 'album    ~  ' + self.get_album() + color.END)
+        try:
+            if arguments[1] == '-u' or arguments[1] == '--url':
+                print(color.ITALIC + color.YELLOW + color.UNDERLINE + 'url      ~  ' + self.get_url() + color.END)
+        except:
+            pass
+        print(color.ITALIC + color.PURPLE + 'lenght   ~  ' + self.get_length() + color.END)
+    
+    def test_funcition(self) -> None:
+        print(self.metadata)
+        pass
+
+
+if __name__ == "__main__":
+    f = fetch()
+    f.display_info()
+    #f.test_funcition()
