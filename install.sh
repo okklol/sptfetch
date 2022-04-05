@@ -1,3 +1,4 @@
+#!/bin/bash
 echo -e "hey! welcome to the installation of sptfetch. a minimal info fetch for spotify songs"
 
 read -r -p "have you already installed pip3? [y/n] " response
