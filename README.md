@@ -11,6 +11,12 @@ minimal info fetch for spotify songs
 - dbus-python (```pip3 install dbus-python```)
 
 ### installation:
+if you use arch or arch based distro, use install script
+```sh
+curl https://github.com/justleoo/sptfetch/blob/main/install.sh | bash
+```
+
+if you use another distro use:
 ```
 pip3 install dbus-python
 git clone https://github.com/okklol/sptfetch.git
