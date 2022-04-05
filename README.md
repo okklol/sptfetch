@@ -13,7 +13,7 @@ minimal info fetch for spotify songs
 ### installation:
 if you use arch or arch based distro, use install script
 ```sh
-curl https://github.com/justleoo/sptfetch/blob/main/install.sh | bash
+curl https://github.com/okklol/sptfetch/blob/main/install.sh | bash
 ```
 
 if you use another distro use:
